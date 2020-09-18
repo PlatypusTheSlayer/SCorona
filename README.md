@@ -1,5 +1,6 @@
 # SCorona
 
 Created by:
-Kacper Maksymowicz
-Theodora Konstantinou
+* Kacper Maksymowicz
+* Theodora Konstantinou
+* Ales Kubicek
