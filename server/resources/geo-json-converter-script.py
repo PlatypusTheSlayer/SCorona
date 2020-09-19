@@ -39,6 +39,10 @@ class GeoDataProvider:
 
             counties[name] = data
 
+        with open('london-geojson.json') as f:
+            london_geojson = json.load(f)
+        counties['London'] = london_geojson
+
         with open('county-to-geojson.json', 'w') as outfile:
             json.dump(counties, outfile)
 
