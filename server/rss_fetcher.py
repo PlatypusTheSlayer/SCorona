@@ -57,7 +57,15 @@ class RssFetcher:
         except:
             return ""
 
+    def get_news_from_file(self):
+        news_array = []
+        f = open('resources/news-feed.txt')
+        files_as_list = f.readlines()
+        for line in files_as_list:
+            news_array.append(line)
+        return news_array
+
+# Testing
 if __name__ == "__main__":
     rss_fetcher = RssFetcher()
-
     print(rss_fetcher.fetch_news_data())
