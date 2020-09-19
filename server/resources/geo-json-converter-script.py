@@ -1,11 +1,17 @@
 import json
+import numpy as np
 
 class GeoDataProvider:
 
     def __init__(self):
-        with open('british-cities-to-counties.json') as f:
+        # with open('british-cities-to-counties.json') as f:
+        #     cities_to_counties = json.load(f)
+        with open('british-cities-to-counties-clean.json') as f:
             cities_to_counties = json.load(f)
         
+        # county_list = np.unique(np.array(list(cities_to_counties.values())))
+        # print("County count from british-cities-to-counties.json:", len(county_list))
+
         county_list = list(cities_to_counties.values())
 
         with open('british-isles-counties.geojson') as f:
@@ -23,13 +29,14 @@ class GeoDataProvider:
             if not name:
                 continue
 
-            data = {}
-            data['type'] = county['type']
-            data['properties'] = {
-                'name': name
+            data = {
+                'type': 'geojson',
+                'data': {
+                    'type': 'Feature',
+                    'geometry': county['geometry']
+                }
             }
-            data['geometry'] = county['geometry']
-            
+
             counties[name] = data
 
         with open('county-to-geojson.json', 'w') as outfile:

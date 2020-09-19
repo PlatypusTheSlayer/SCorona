@@ -17,15 +17,14 @@ class DataFetcher:
         if db_data:
             return db_data
         else:
-            return self.get_mock_data()
-            # return self.fetch_new_data()
+            return self.fetch_new_data()
 
     def fetch_new_data(self):
         # news_arr = self.rss_fetcher.fetch_news_data()
         news_arr = self.rss_fetcher.get_news_from_file()
 
         global_news_count = 0
-        county_dict = {}
+        county_dict = self.get_all_county_data()
         for news in news_arr:
             county_name = self.data_parser.parse_text_for_location(news)
 
@@ -43,34 +42,40 @@ class DataFetcher:
                     },
                     'newscount': 1,
                     'emotions': 1,
-                    'opacity': 0.8,
                     'color': '#00ff00'
                 }
                 county_dict[county_name] = county_data
 
+        max_newscount = -1
         for county in county_dict.values():
-            county['newscount'] += global_news_count
+            county['newscount'] += 1
+
+            if county['newscount'] > max_newscount:
+                max_newscount = county['newscount']
+            
+        for county in county_dict.values():
+            county['opacity'] = county['newscount'] / max_newscount
 
         return list(county_dict.values())
 
 
-    def get_mock_data(self):
+    def get_all_county_data(self):
         geojsons = self.geo_data_provider.get_all_geojsons()
         county_dict = {}
 
-        for geojson in geojsons:
-            county_name = geojson['properties']['name']
+        for key, geojson in geojsons.items():
+            county_name = key
 
             county_data = {
                 'county': {
                     'name': county_name,
                     'geojson': geojson
                 },
-                'newscount': 1,
-                'emotions': 1,
-                'opacity': 0.8,
+                'newscount': 0,
+                'emotions': 0,
+                'opacity': 1,
                 'color': '#00ff00'
             }
             county_dict[county_name] = county_data
 
-        return list(county_dict.values())
+        return county_dict

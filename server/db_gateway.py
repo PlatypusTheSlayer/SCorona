@@ -7,7 +7,11 @@ class DBGateway:
         connection_url = 'mongodb+srv://SCorona-user:QeiFrZ23QM7FNStA@scoronacluster.xdyqi.mongodb.net/test?retryWrites=true&w=majority'
         database_name = 'SCoronaDB'
         db_client = pymongo.MongoClient(connection_url)
-        self.db = db_client.get_database(database_name)
+        db = db_client.get_database(database_name)
+        self.collection = db.get_collection('news-analysis')
+
+    def insert(self, data):
+        self.collection.insert_one(data)
 
     def get_everythang(self):
         return ""

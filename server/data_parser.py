@@ -9,7 +9,7 @@ class DataParser:
         nltk.download('punkt', download_dir=nltkpath)
         nltk.data.path.append(nltkpath)
 
-        with open('resources/british-cities-to-counties.json') as f:
+        with open('resources/british-cities-to-counties-clean.json') as f:
             cities_to_counties = json.load(f)
 
         self.counties = np.unique(np.array(list(cities_to_counties.values())))

@@ -13,11 +13,7 @@ class GeoDataProvider:
             return self.county_to_geojson['Bedfordshire']
 
     def get_all_geojsons(self):
-        counties = []
-        for county in self.county_to_geojson.values():
-            counties.append(county)
-        
-        return counties
+        return self.county_to_geojson
 
 if __name__ == "__main__":
     geo_data_provider = GeoDataProvider()
