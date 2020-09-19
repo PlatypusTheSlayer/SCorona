@@ -17,6 +17,11 @@
   float: left;
 }
 
+.mapboxgl-popup {
+  max-width: 800px;
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+}
+
 #map_side {
   float: right; 
   width: 20%; 
@@ -46,4 +51,51 @@ header h1 {
 
 #dateInputForm {
   margin: 15px 20px;
+}
+
+.my-legend .legend-title {
+  /* bottom */
+  position: absolute;
+  bottom: 110px;
+
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.my-legend .legend-scale ul {
+  /* bottom */
+  position: absolute;
+  bottom: 70px;
+
+  margin: 0;
+  padding: 0;
+  float: left;
+  list-style: none;
+}
+
+.my-legend .legend-scale ul li {
+  display: block;
+  float: left;
+  width: 52px;
+  margin-bottom: 6px;
+  text-align: center;
+  font-size: 90%;
+  list-style: none;
+}
+
+.my-legend ul.legend-labels li span {
+  display: block;
+  float: left;
+  height: 17px;
+  width: 52px;
+}
+
+.my-legend .legend-source {
+  font-size: 70%;
+  color: #999;
+  clear: both;
+}
+
+.my-legend a {
+  color: #777;  
 }

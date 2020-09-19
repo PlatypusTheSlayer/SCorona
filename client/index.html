@@ -10,6 +10,9 @@
   <link href="css/bootstrap.min.css" rel="stylesheet" />
   <link href="css/main.css" rel="stylesheet" />
   <link href="css/flatpickr.min.css" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="css/table.css">
+  <script src="js/jquery-3.5.1.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -22,6 +25,7 @@
       <h1>SCorona</h1>
     </header>
     
+    <br>
     <form id="dateInputForm">
       <div class="form-group">
         <label for="dateInput">News/Twitter data date</label>
@@ -29,6 +33,72 @@
       </div>
     </form>
 
+        <div class="limiter ">
+            <div class="container-table100">
+              <div class="wrap-table100">
+                  <div class="table">
+                    <div class="row header">
+                      <div class="cell">
+                        Positive<br>News
+                      </div>
+                      <div class="cell">
+                        Negative<br>News
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="cell" data-title="Positive">
+                        3
+                      </div>
+                      <div class="cell" data-title="Negative">
+                        33
+                      </div>
+                    </div>
+                </div>
+              </div>
+              <br><br>
+
+          <div class="wrap-table100">
+            <div class="table">
+            <div class="row header">
+              <div class="cell">
+                Positive<br>Tweets
+              </div>
+              <div class="cell">
+                Negative<br>Tweets
+              </div>
+            </div>
+            <div class="row">
+              <div class="cell" data-title="Positive">
+                4
+              </div>
+              <div class="cell" data-title="Negative">
+                45
+              </div>
+            </div>
+        </div>
+      </div>
+
+      </div>
+    </div>
+
+
+<div class='my-legend ml-4 mr-3' style="text-align: center;">
+  <div class='legend-title'>Corona Scare Levels</div>
+  <div class='legend-scale'>
+    <ul class='legend-labels'>
+      <li><span style='background:#32CD32;'></span>0 - 20%</li>
+      <li><span style='background:#ADFF2F;'></span>40%</li>
+      <li><span style='background:#FFFF00;'></span>60%</li>
+      <li><span style='background:#FF8C00;'></span>80%</li>
+      <li><span style='background:#FF0000;'></span>100%</li>
+    </ul>
+  </div>
+</div>
+
+
+  <div class=''> <a href="#link to source"></a></div>
+    <img class="" style="position: absolute; width: 20%; right: 0px; bottom: 0px; margin:0; padding:0;" src="res/SRF_log.png" />
   </div>
 
   <script src="js/scorona.js" type="text/javascript"></script>
