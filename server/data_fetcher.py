@@ -58,7 +58,7 @@ class DataFetcher:
                     },
                     'newscount': 1,
                     'emotions': {
-                        'positive': 0
+                        'positive': 0,
                         'negative': 0
                     },
                     'color': '#00ff00'
@@ -87,7 +87,7 @@ class DataFetcher:
                     },
                     'newscount': 1,
                     'emotions': {
-                        'positive': 0
+                        'positive': 0,
                         'negative': 0
                     },
                     'color': '#00ff00'
@@ -129,7 +129,3 @@ class DataFetcher:
             county_dict[county_name] = county_data
 
         return county_dict
-
-if __name__ == "__main__":
-    data_fetcher = DataFetcher()
-    data_fetcher.fetch_new_data()
