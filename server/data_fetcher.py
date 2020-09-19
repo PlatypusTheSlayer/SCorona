@@ -3,6 +3,7 @@ from db_gateway import DBGateway
 from data_parser import DataParser
 from geo_data_provider import GeoDataProvider
 from twitter_fetcher import TwitterFetcher
+from sentiment_evaluator import predict_sentiment
 import datetime
 
 class DataFetcher:
@@ -32,16 +33,22 @@ class DataFetcher:
         # news_arr = self.rss_fetcher.fetch_news_data()
         news_arr = self.rss_fetcher.get_news_from_file()
 
-        global_news_count = 0
+        global_sentiment = {
+            'positive': 0,
+            'negative': 0
+        }
         county_dict = self.get_all_county_data()
         for news in news_arr:
             county_name = self.data_parser.parse_text_for_location(news)
+            sentiment = predict_sentiment(news)
 
             if county_name == 'NO_LOCATION':
                 global_news_count += 1
+                global_sentiment[sentiment] += 1
             elif county_name in county_dict:
                 county = county_dict[county_name]
                 county['newscount'] += 1
+                county['emotions'][sentiment] += 1
             else:
                 county_geojson = self.geo_data_provider.get_geojson_for_county(county_name)
                 county_data = {
@@ -50,20 +57,27 @@ class DataFetcher:
                         'geojson': county_geojson
                     },
                     'newscount': 1,
-                    'emotions': 1,
+                    'emotions': {
+                        'positive': 0
+                        'negative': 0
+                    },
                     'color': '#00ff00'
                 }
+                county_data['emotions'][sentiment] += 1
                 county_dict[county_name] = county_data
 
         tweets = self.twitter_fetcher.get_yesterday_twitter_data(300)
         for tweet in tweets:
             county_name = self.data_parser.parse_text_for_location(tweet)
+            sentiment = predict_sentiment(tweet)
 
             if county_name == 'NO_LOCATION':
                 global_news_count += 1
+                global_sentiment[sentiment] += 1
             elif county_name in county_dict:
                 county = county_dict[county_name]
                 county['newscount'] += 1
+                county['emotions'][sentiment] += 1
             else:
                 county_geojson = self.geo_data_provider.get_geojson_for_county(county_name)
                 county_data = {
@@ -72,14 +86,20 @@ class DataFetcher:
                         'geojson': county_geojson
                     },
                     'newscount': 1,
-                    'emotions': 1,
+                    'emotions': {
+                        'positive': 0
+                        'negative': 0
+                    },
                     'color': '#00ff00'
                 }
+                county_data['emotions'][sentiment] += 1
                 county_dict[county_name] = county_data
 
         max_newscount = -1
         for county in county_dict.values():
             county['newscount'] += 1
+            county['emotions']['positive'] += global_sentiment['positive']
+            county['emotions']['negative'] += global_sentiment['negative']
 
             if county['newscount'] > max_newscount:
                 max_newscount = county['newscount']
