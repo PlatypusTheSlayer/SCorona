@@ -21,5 +21,5 @@ picker.flatpickr({
 });
 
 function dateSelected() {
-    alert(picker.value);
+    alert("Currently, only real-time data functionality is available.");
 }
