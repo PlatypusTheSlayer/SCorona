@@ -38,6 +38,7 @@ class DataFetcher:
             'negative': 0
         }
         county_dict = self.get_all_county_data()
+        global_news_count = 0
         for news in news_arr:
             county_name = self.data_parser.parse_text_for_location(news)
             sentiment = predict_sentiment(news)
@@ -57,6 +58,7 @@ class DataFetcher:
                         'geojson': county_geojson
                     },
                     'newscount': 1,
+                    'tweetcount': 0,
                     'emotions': {
                         'positive': 0,
                         'negative': 0
@@ -66,17 +68,18 @@ class DataFetcher:
                 county_data['emotions'][sentiment] += 1
                 county_dict[county_name] = county_data
 
+        global_tweet_count = 0
         tweets = self.twitter_fetcher.get_yesterday_twitter_data(300)
         for tweet in tweets:
             county_name = self.data_parser.parse_text_for_location(tweet)
             sentiment = predict_sentiment(tweet)
 
             if county_name == 'NO_LOCATION':
-                global_news_count += 1
+                global_tweet_count += 1
                 global_sentiment[sentiment] += 1
             elif county_name in county_dict:
                 county = county_dict[county_name]
-                county['newscount'] += 1
+                county['tweetcount'] += 1
                 county['emotions'][sentiment] += 1
             else:
                 county_geojson = self.geo_data_provider.get_geojson_for_county(county_name)
@@ -85,7 +88,8 @@ class DataFetcher:
                         'name': county_name,
                         'geojson': county_geojson
                     },
-                    'newscount': 1,
+                    'tweetcount': 1,
+                    'newscount': 0,
                     'emotions': {
                         'positive': 0,
                         'negative': 0
@@ -95,17 +99,18 @@ class DataFetcher:
                 county_data['emotions'][sentiment] += 1
                 county_dict[county_name] = county_data
 
-        max_newscount = -1
+        max_count = -1
         for county in county_dict.values():
-            county['newscount'] += 1
+            county['newscount'] += global_news_count
+            county['tweetcount'] += global_tweet_count
             county['emotions']['positive'] += global_sentiment['positive']
             county['emotions']['negative'] += global_sentiment['negative']
 
-            if county['newscount'] > max_newscount:
-                max_newscount = county['newscount']
+            if county['newscount'] > max_count:
+                max_count = county['newscount']
             
         for county in county_dict.values():
-            county['opacity'] = county['newscount'] / max_newscount
+            county['opacity'] = county['newscount'] / max_count
 
         return list(county_dict.values())
 
@@ -122,7 +127,11 @@ class DataFetcher:
                     'geojson': geojson
                 },
                 'newscount': 0,
-                'emotions': 0,
+                'tweetcount': 0,
+                'emotions': {
+                    'positive': 0,
+                    'negative': 0
+                },
                 'opacity': 1,
                 'color': '#00ff00'
             }

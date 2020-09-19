@@ -39,7 +39,7 @@ def update_db(db_updater, delay):
     db_updater.run()
 
 def run_updater():
-    delay = 300
+    delay = 7200
     db_updater = sched.scheduler(time.time, time.sleep)
     db_updater.enter(0, 2, update_db, argument=(db_updater, delay))
     db_updater.run()
