@@ -3,23 +3,30 @@ from db_gateway import DBGateway
 from data_parser import DataParser
 from geo_data_provider import GeoDataProvider
 from twitter_fetcher import TwitterFetcher
+import datetime
 
 class DataFetcher:
     
-    def __init__(self):
+    def __init__(self, db_gateway):
         self.rss_fetcher = RssFetcher()
-        self.db_gateway = DBGateway()
+        self.db_gateway = db_gateway
         self.data_parser = DataParser()
         self.geo_data_provider = GeoDataProvider()
         self.twitter_fetcher = TwitterFetcher()
 
     def fetch(self, date_arg):
-        db_data = self.db_gateway.get_everythang()
+        db_data = self.db_gateway.get(date_arg)
 
         if db_data:
             return db_data
         else:
-            return self.fetch_new_data()
+            db_data = self.db_gateway.get(datetime.date.today())
+            if db_data:
+                return db_data
+            else:
+                data = self.fetch_new_data()
+                self.db_gateway.insert(data)
+                return data
 
     def fetch_new_data(self):
         # news_arr = self.rss_fetcher.fetch_news_data()
