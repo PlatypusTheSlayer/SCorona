@@ -17,7 +17,7 @@ let positive_count;
 let news_count;
 let tweet_count;
 
-let county_geojson
+let county_geojson;
 $(document).ready(function(){
     $.get("http://127.0.0.1:5000/map-data", function(data, status){
       county_geojson = data;
@@ -78,8 +78,8 @@ map.on('load', function() {
 
     document.getElementById("news").innerHTML = news_count;
     document.getElementById("tweets").innerHTML = tweet_count;
-    document.getElementById("negative").innerHTML = negative_count;
-    document.getElementById("positive").innerHTML = positive_count;
+    document.getElementById("neg").innerHTML = negative_count;
+    document.getElementById("pos").innerHTML = positive_count;
 
 })
 
