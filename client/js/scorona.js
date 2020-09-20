@@ -12,18 +12,18 @@ var map = new mapboxgl.Map({
     zoom: 5 
 });
 
-let county_geojson;
+let negative_count;
+let positive_count;
+let news_count;
+let tweet_count;
+
+let county_geojson
 $(document).ready(function(){
     $.get("http://127.0.0.1:5000/map-data", function(data, status){
       county_geojson = data;
     });
 });
 
-
-let emotions1;
-let emotions2;
-let news_count;
-let tweet_count;
 map.on('load', function() {
 
     for (var i = 0; i < county_geojson.length; i++) {
@@ -54,13 +54,13 @@ map.on('load', function() {
 
         news_count = county_geojson[i].newscount;
         tweet_count = county_geojson[i].tweetcount;
-        emotions1 = county_geojson[i].emotions.negative;
-        emotions2 = county_geojson[i].emotions.positive;
+        negative_count = county_geojson[i].emotions.negative;
+        positive_count = county_geojson[i].emotions.positive;
         map.on('click', id, function (e) {
             new mapboxgl.Popup()
                 .setLngLat(e.lngLat)
                 .setHTML('<h6>News count: ' + news_count + '<br>Tweets count: ' + tweet_count
-                         + '<br>Positive: ' + emotions2 + '<br>Negative: ' + emotions1 + '</h6>')
+                         + '<br>Positive: ' + positive_count + '<br>Negative: ' + negative_count + '</h6>')
                 .addTo(map);
         });
 
@@ -75,6 +75,12 @@ map.on('load', function() {
         });
 
     }
+
+    document.getElementById("news").innerHTML = news_count;
+    document.getElementById("tweets").innerHTML = tweet_count;
+    document.getElementById("negative").innerHTML = negative_count;
+    document.getElementById("positive").innerHTML = positive_count;
+
 })
 
 
