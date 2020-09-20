@@ -3,8 +3,11 @@
 from datetime import datetime
 from flask import Flask, request, jsonify
 import dateparser
+from flask import send_from_directory
 from db_gateway import DBGateway
 from data_fetcher import DataFetcher
+from flask import Flask
+from flask_cors import CORS
 import sched, time
 import logging
 import threading
@@ -13,6 +16,7 @@ db_gateway = DBGateway()
 data_fetcher = DataFetcher(db_gateway)
 
 app = Flask(__name__)
+CORS(app)
 logging.basicConfig(level=logging.ERROR)
 log = logging.getLogger(__name__)
 
